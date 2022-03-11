@@ -475,6 +475,18 @@ extension XMLDecoderImplementation {
     }
 }
 
+public extension Decoder {
+    var currentKey: String? {
+        guard
+            let s = self as? XMLDecoderImplementation,
+            let b = s.storage.topContainer() as? SingleKeyedBox
+        else {
+            return nil
+        }
+        return b.key
+    }
+}
+
 extension XMLDecoderImplementation {
     var keyTransform: (String) -> String {
         switch options.keyDecodingStrategy {
