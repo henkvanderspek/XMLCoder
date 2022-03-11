@@ -475,15 +475,21 @@ extension XMLDecoderImplementation {
     }
 }
 
+public struct DecoderItem {
+    public let name: String
+    public let attributes: [String: String]
+}
+
 public extension Decoder {
-    var currentKey: String? {
+    var currentItem: DecoderItem? {
         guard
             let s = self as? XMLDecoderImplementation,
-            let b = s.storage.topContainer() as? SingleKeyedBox
+            let b = s.storage.topContainer() as? SingleKeyedBox,
+            let kb = b.element as? KeyedBox
         else {
             return nil
         }
-        return b.key
+        return .init(name: b.key, attributes: kb.dict)
     }
 }
 

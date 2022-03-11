@@ -40,6 +40,20 @@ extension KeyedBox {
     }
 }
 
+extension KeyedBox {
+    var dict: [String: String] {
+        return attributes.dict
+    }
+}
+
+extension KeyedBox.Attributes {
+    var dict: [String: String] {
+        return keys.reduce(into: [:]) {
+            $0[$1] = (self[$1].first as? StringBox)?.unboxed ?? ""
+        }
+    }
+}
+
 extension KeyedBox: Box {
     var isNull: Bool {
         return false
